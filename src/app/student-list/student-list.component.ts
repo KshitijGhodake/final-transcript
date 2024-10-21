@@ -28,13 +28,12 @@ export class StudentListComponent implements OnInit {
   ngOnInit(): void {
     // apply debounceTime and distinctUntilChanged
     this.searchSubject.pipe(
-      debounceTime(200),           // Wait for 200 ms of no activity
-      distinctUntilChanged()         // Only proceed if the value has changed
+      debounceTime(200),
+      distinctUntilChanged()
     ).subscribe(searchText => {
       this.filterData(searchText);
     });
 
-    // Initialize filtered data
     this.filteredStudentData = [];
   }
 

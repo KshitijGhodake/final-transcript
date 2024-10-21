@@ -3,13 +3,21 @@
 </div>
 
 <div *ngIf="student">
-  <div class="container-fluid my-4" id="transcript-container">
+  <div class="container-fluid my-4">
     <h1 class="text-center">TRANSCRIPT</h1>
+    <div>
+      <p>Name: {{student.name}}</p>
+      <p>USID: {{student.id}}</p>
+      <p>Roll no: {{student.rollNumber}}</p>
+      <p>Department: {{student.department}}</p>
+    </div>
+    <app-pdf-generator [semesterPairs]="semesterPairs" [student]="student" [gpaList]="gpaList"></app-pdf-generator>
 
-    <!-- Loop through each semester pair -->
+
+    <!-- Semester table section -->
     <div *ngFor="let pair of semesterPairs" class="row">
 
-      <!-- Odd Semester Column -->
+      <!-- Odd Semester section -->
       <div class="col-12 col-md-6 mb-4">
         <h2 class="text-center">Semester {{ pair.odd.semesterID }}</h2>
         <div class="table-responsive">
@@ -40,7 +48,7 @@
         </div>
       </div>
 
-      <!-- Even Semester Column, if it exists -->
+      <!-- Even Semester section  -->
       <div class="col-12 col-md-6 mb-4" *ngIf="pair.even">
         <h2 class="text-center">Semester {{ pair.even.semesterID }}</h2>
         <div class="table-responsive">
@@ -73,10 +81,34 @@
 
     </div>
 
-    <!-- Transcript Info and PDF Generator Components -->
-    <app-transcript-info></app-transcript-info>
+    <!-- CGPA GPA Table section -->
+    <div style="padding-left: 10%; padding-right: 10%">
+      <table class="table table-bordered table-striped table-hover text-center">
+        <thead class="thead-dark">
+        <tr>
+          <th>Semester</th>
+          <th *ngFor="let semester of student.semestersPassed; let i = index">{{ semester.semesterID }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th>Total Credits</th>
+          <td *ngFor="let semester of student.semestersPassed; let i = index">{{ semester.requiredCredits }}</td>
+        </tr>
+        <tr>
+          <th>Earned Credits</th>
+          <td *ngFor="let semester of student.semestersPassed; let i = index">{{ semester.earnedCredits }}</td>
+        </tr>
+        <tr>
+          <th>GPA</th>
+          <td *ngFor="let gpa of gpaList; let i = index">{{ gpa }}</td>
+        </tr>
+        <tr>
+          <th>CGPA</th>
+          <td *ngFor="let semester of student.semestersPassed; let i = index">{{ semester.cgpa }}</td>
+        </tr>
+        </tbody>
+      </table>
+      </div>
   </div>
-
-  <!-- PDF Generator -->
-  <app-pdf-generator [semesterPairs]="semesterPairs" [student]="student" [gpaList]="gpaList"></app-pdf-generator>
 </div>
